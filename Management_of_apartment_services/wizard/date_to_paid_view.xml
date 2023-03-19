@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="date_to_paid_action" model="ir.actions.act_window">
+            <field name="name">Date to Paid</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">datetopaid</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="paid_view_form" model="ir.ui.view">
+            <field name="name">paid_view_form</field>
+            <field name="model">datetopaid</field>
+            <field name="arch" type="xml">
+                <form string="paid_form">
+                    <sheet>
+                        <group class="oe_title">
+                            <field name="datetopaid" required="1"/>
+                        </group>
+                        <footer>
+                            <Button name="action_confirm" string="Xác nhận" type="object" class="btn_primary"/>
+                            <Button string="Hủy" class="btn_secondary" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

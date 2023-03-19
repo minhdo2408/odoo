@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="date_to_leave_action" model="ir.actions.act_window">
+            <field name="name">Date to leave</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">datetoleave</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="leave_view_form" model="ir.ui.view">
+            <field name="name">leave_view_form</field>
+            <field name="model">datetoleave</field>
+            <field name="arch" type="xml">
+                <form string="leave_form">
+                    <sheet>
+                        <group class="oe_title">
+                            <field name="datetoleave" required="1"/>
+                        </group>
+                        <footer>
+                            <Button name="action_confirm" string="Xác nhận" type="object" class="btn_primary"/>
+                            <Button string="Hủy" class="btn_secondary" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

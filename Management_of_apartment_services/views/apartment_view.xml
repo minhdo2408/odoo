@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="apartment_view_tree" model="ir.ui.view">
+            <field name="name">apartment_view_tree</field>
+            <field name="model">apartment</field>
+            <field name="arch" type="xml">
+                <tree string="apartment_tree">
+                    <field name="roomnumber" widget="integer" options="{'format': 0}"/>
+                    <field name="roomfloor"/>
+                    <field name="roomarea"/>
+                    <field name="roomdesc"/>
+                    <field name="roomrating" widget="priority"/>
+                    <field name="roomstatus"
+                           decoration-success="roomstatus == 'on'"
+                           decoration-warning="roomstatus == 'off'"
+                           widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="apartment_view_form" model="ir.ui.view">
+            <field name="name">apartment_view_form</field>
+            <field name="model">apartment</field>
+            <field name="arch" type="xml">
+                <form string="apartment_form">
+                    <sheet>
+                        <div class="oe_title">
+                            <strong>Số phòng</strong>
+                            <label for="roomnumber" class="oe_edit_only"/>
+                            <h1>
+                                <field name="roomnumber" placeholder="Số phòng" widget="integer" options="{'format': 0}"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="roomfloor" placeholder="Tầng"/>
+                                <field name="roomarea" placeholder="Diện tích căn hộ"/>
+                            </group>
+                            <group>
+                                <field name="roomimage" class="oe_avatar" widget="image"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Mô tả chi tiết căn hộ">
+                                <field name="roomdesc"/>
+                            </page>
+                        </notebook>
+                        <div>
+                            <group>
+                                <field name="roomrating" widget="priority"/>
+                                <field name="roomstatus" widget="selection_badge"/>
+                            </group>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="apartment_view_kanban" model="ir.ui.view">
+            <field name="name">apartment_view_kanban</field>
+            <field name="model">apartment</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="roomrating">
+                    <field name="id"/>
+                    <field name="roomnumber"/>
+                    <field name="roomfloor"/>
+                    <field name="roomarea"/>
+                    <field name="roomrating"/>
+                    <field name="roomimage"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                                <div class="o_kanban_image">
+                                    <img alt="Avatar"
+                                        t-att-src="kanban_image('apartment', 'roomimage', record.id.raw_value)"/>
+                                </div>
+                                <div class="oe_kanban_details d-flex flex-column">
+                                    <strong>
+                                        Số căn hộ: <field name="roomnumber"/>
+                                    </strong>
+                                    <ul>
+                                        <li>
+                                            Tầng: <field name="roomfloor"/>
+                                        </li>
+                                        <li>
+                                            Diện tích <field name="roomarea"/>
+                                        </li>
+                                        <li>
+                                            Đánh giá tình trạng: <field name="roomrating"/>
+                                        </li>
+                                        <li>
+                                            Trạng thái: <field name="roomstatus"
+                                                               decoration-success="roomstatus == 'on'"
+                                                               decoration-warning="roomstatus == 'off'"
+                                                               widget="badge"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="apartment_action" model="ir.actions.act_window">
+            <field name="name">Apartment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">apartment</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="apartment_id" name="Quản lý căn hộ" parent="customer_id" action="apartment_action" sequence="2"/>
+    </data>
+</odoo>

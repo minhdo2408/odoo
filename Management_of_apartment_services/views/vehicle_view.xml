@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="vehicle_view_tree" model="ir.ui.view">
+            <field name="name">vehicle_view_tree</field>
+            <field name="model">vehicle</field>
+            <field name="arch" type="xml">
+                <tree string="vehicle_tree">
+                    <field name="vehicleid"/>
+                    <field name="owner_id"/>
+                    <field name="vehiclemodel"/>
+                    <field name="vehicleclass"
+                           decoration-success="vehicleclass == 'car'"
+                           decoration-warning="vehicleclass == 'motorbike'"
+                           decoration-info="vehicleclass == 'bike'"
+                           widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="vehicle_view_form" model="ir.ui.view">
+            <field name="name">vehicle_view_form</field>
+            <field name="model">vehicle</field>
+            <field name="arch" type="xml">
+                <form string="vehicle_form">
+                    <sheet>
+                        <div class="oe_title">
+                            <strong>Biển số xe:</strong>
+                            <label for="vehicleid" class="oe_edit_only"/>
+                            <h1>
+                                <field name="vehicleid" placeholder="Biển số xe"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="owner_id" placeholder="Căn hộ đăng ký gửi xe"/>
+                            <field name="vehiclemodel" placeholder="Mô tả chi tiết về loại xe, màu sắc"/>
+                            <field name="vehicleclass" placeholder="Chọn loại xe" widget="selection_badge"/>
+                        </group>
+                        <group>
+                                <field name="vehicleimage" class="oe_avatar" widget="image"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="vehicle_view_kanban" model="ir.ui.view">
+            <field name="name">vehicle_view_kanban</field>
+            <field name="model">vehicle</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="vehicleclass">
+                    <field name="id"/>
+                    <field name="vehicleid"/>
+                    <field name="vehicleclass"/>
+                    <field name="owner_id"/>
+                    <field name="vehicleimage"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                                <div class="o_kanban_image">
+                                    <img alt="Avatar"
+                                        t-att-src="kanban_image('vehicle', 'vehicleimage', record.id.raw_value)"/>
+                                </div>
+                                <div class="oe_kanban_details d-flex flex-column">
+                                    <strong>
+                                        Biển số xe: <field name="vehicleid"/>
+                                    </strong>
+                                    <ul>
+                                        <li>
+                                            Loại xe: <field name="vehicleclass"
+                                                            decoration-success="vehicleclass == 'car'"
+                                                            decoration-warning="vehicleclass == 'motorbike'"
+                                                            decoration-info="vehicleclass == 'bike'"
+                                                            widget="badge"/>
+                                        </li>
+                                        <li>
+                                            Căn hộ: <field name="owner_id"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="vehicle_action" model="ir.actions.act_window">
+            <field name="name">Vehicle</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vehicle</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="vehicle_id" name="Quản lý xe" parent="service_id" action="vehicle_action" sequence="2"/>
+    </data>
+</odoo>

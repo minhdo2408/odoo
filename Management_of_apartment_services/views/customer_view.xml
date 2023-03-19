@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="customer_view_tree" model="ir.ui.view">
+            <field name="name">customer_view_tree</field>
+            <field name="model">customer</field>
+            <field name="arch" type="xml">
+                <tree string="customer_tree">
+                    <field name="apartment_id"/>
+                    <field name="floor"/>
+                    <field name="owner"/>
+                    <field name="gender"/>
+                    <field name="phone"/>
+                    <field name="cmnd"/>
+                    <field name="area"/>
+                    <field name="customerstatus"
+                           decoration-success="customerstatus == 'residing'"
+                           decoration-warning="customerstatus == 'left'"
+                           widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="customer_view_form" model="ir.ui.view">
+            <field name="name">customer_view_form</field>
+            <field name="model">customer</field>
+            <field name="arch" type="xml">
+                <form string="customer_form">
+                    <header>
+                        <button name="%(date_to_leave_action)d" string="Đã rời đi" type="action" class="oe_highlight"/>
+                        <field name="customerstatus" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="action" name="%(service_action)d" icon="fa-arrows-alt">
+                                <field name="area" widget="statinfo" string="Diện tích"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <strong>Căn hộ đang cư trú</strong>
+                            <label for="apartment_id" class="oe_edit_only"/>
+                            <h1>
+                                <field name="apartment_id" placeholder="Căn hộ..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="owner" placeholder="Họ và tên chủ sở hữu"/>
+                                <field name="gender" widget="radio"/>
+                                <field name="phone" placeholder="Số điện thoại liên hệ"/>
+                            </group>
+
+                            <group>
+                                <field name="cmnd" placeholder="Chứng minh nhân dân/Căn cước công dân"/>
+                                <field name="floor"/>
+                                <field name="leavedate"/>
+                            </group>
+                            <group>
+                                <field name="customerimage" class="oe_avatar" widget="image"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="customer_view_kanban" model="ir.ui.view">
+            <field name="name">customer_view_kanban</field>
+            <field name="model">customer</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="id"/>
+                    <field name="owner"/>
+                    <field name="gender"/>
+                    <field name="phone"/>
+                    <field name="customerstatus"/>
+                    <field name="customerimage"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill">
+                                <div class="o_kanban_image">
+                                    <img alt="Avatar"
+                                        t-att-src="kanban_image('customer', 'customerimage', record.id.raw_value)"/>
+                                </div>
+                                <div class="oe_kanban_details d-flex flex-column">
+                                    <strong>
+                                        Tên chủ hộ: <field name="owner"/>
+                                    </strong>
+                                    <ul>
+                                        <li>
+                                            Giới tính: <field name="gender"/>
+                                        </li>
+                                        <li>
+                                            Số điện thoại: <field name="phone"/>
+                                        </li>
+                                        <li>
+                                            Trạng thái cư trú: <field name="customerstatus"
+                                                                      decoration-success="customerstatus == 'residing'"
+                                                                      decoration-warning="customerstatus == 'left'"
+                                                                      widget="badge"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="customer_action" model="ir.actions.act_window">
+            <field name="name">Customer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="customer_id" name="Khách hàng" parent="apartment_service_root" sequence="2"/>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="info_id" name="Thông tin cư dân" parent="customer_id" action="customer_action" sequence="1"/>
+    </data>
+</odoo>

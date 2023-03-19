@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="customer_action_by_bill" model="ir.actions.act_window">
+            <field name="name">Customer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('apartment','=','csm_id')]</field>
+        </record>
+
+        <record id="service_action_by_bill" model="ir.actions.act_window">
+            <field name="name">Service</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">service</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('servicecode','=','service_id')]</field>
+        </record>
+
+        <record id="bill_view_tree" model="ir.ui.view">
+            <field name="name">bill_view_tree</field>
+            <field name="model">bill</field>
+            <field name="arch" type="xml">
+                <tree string="bill_tree">
+                    <field name="apartmentbill"/>
+                    <field name="date"/>
+                    <field name="owerbill"/>
+                    <field name="waterbill"/>
+                    <field name="electricbill"/>
+                    <field name="parkingbill"/>
+                    <field name="publicbill"/>
+                    <field name="totalbill"/>
+                    <field name="billstatus"
+                           decoration-success="billstatus == 'paid'"
+                           decoration-warning="billstatus == 'unpaid'"
+                           widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="bill_view_form" model="ir.ui.view">
+            <field name="name">bill_view_form</field>
+            <field name="model">bill</field>
+            <field name="arch" type="xml">
+                <form string="bill_form">
+                    <header>
+                        <button name="%(date_to_paid_action)d" string="Đã thanh toán" type="action" class="oe_highlight"/>
+                        <field name="billstatus" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="action" name="%(customer_action_by_bill)d" icon="fa-home">
+                                <field name="csm_id" widget="statinfo" string="Căn hộ"/>
+                            </button>
+                            <button class="oe_stat_button" type="action" name="%(customer_action)d" icon="fa-arrows-alt">
+                                <field name="narea" widget="statinfo" string="Căn hộ"/>
+                            </button>
+                            <button class="oe_stat_button" type="action" name="%(service_action_by_bill)d" icon="fa-tint">
+                                <field name="nwater" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" type="action" name="%(service_action_by_bill)d" icon="fa-bolt">
+                                <field name="nelectric" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" type="action" name="%(service_action_by_bill)d" icon="fa-bicycle">
+                                <field name="nbike" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" type="action" name="%(service_action_by_bill)d" icon="fa-motorcycle">
+                                <field name="nmotorbike" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" type="action" name="%(service_action_by_bill)d" icon="fa-car">
+                                <field name="ncar" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="csm_id" placeholder="Chọn căn hộ lập hóa đơn"/>
+                            </group>
+                            <group>
+                                <field name="service_id" placeholder="Mã dịch vụ căn hộ theo tháng"/>
+                            </group>
+
+                            <group>
+                                <field name="date" placeholder="Ngày lập hóa đơn"/>
+                            </group>
+
+                            <group>
+                                <field name="owerbill"/>
+                            </group>
+                        </group>
+
+                        <notebook string="Chi tiết hóa đơn">
+                            <page string="Hóa đơn nước">
+                                <field name="waterbill"/>
+                            </page>
+                            <page string="Hóa đơn điện">
+                                <field name="electricbill"/>
+                            </page>
+                            <page string="Hóa đơn gửi xe">
+                                <field name="parkingbill"/>
+                            </page>
+                            <page string="Hóa đơn dịch vụ chung">
+                                <field name="publicbill"/>
+                            </page>
+
+                        </notebook>
+
+                        <group>
+                            <field name="totalbill"/>
+                        </group>
+                        <group>
+                            <field name="paiddate"/>
+                        </group>
+                        <group col="2">
+                            <group>
+                                <group>
+                                    <center>
+                                        <strong>
+                                            Thu ngân
+                                        </strong>
+                                    </center>
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <center>
+                                        <strong>
+                                            Người thanh toán
+                                        </strong>
+                                    </center>
+                                </group>
+                            </group>
+                        </group>
+                        <div class="oe_right oe_button_box">
+                            <button name="%(bill_action)d" string="In hóa đơn" type="action" icon="fa-print"/>
+                        </div>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="bill_action" model="ir.actions.act_window">
+            <field name="name">Bill</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bill</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="bill_id" name="Hóa đơn" parent="apartment_service_root" action="bill_action" sequence="3"/>
+    </data>
+</odoo>

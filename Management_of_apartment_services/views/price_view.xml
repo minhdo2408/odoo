@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="price_view_tree" model="ir.ui.view">
+            <field name="name">price_view_tree</field>
+            <field name="model">price</field>
+            <field name="arch" type="xml">
+                <tree string="price_tree">
+                    <field name="dateprice"/>
+                    <field name="veh1"/>
+                    <field name="veh2"/>
+                    <field name="veh3"/>
+                    <field name="pub"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="price_view_form" model="ir.ui.view">
+            <field name="name">price_view_form</field>
+            <field name="model">price</field>
+            <field name="arch" type="xml">
+                <form string="price_form">
+                    <sheet>
+                        <group>
+                            <field name="dateprice"/>
+                        </group>
+                        <notebook string="Bảng giá dịch vụ">
+                            <page string="Bảng giá nước">
+                                <group>
+                                    <field name="waterprice"/>
+                                </group>
+                            </page>
+                            <page string="Bảng giá điện">
+                                <group>
+                                    <field name="electricprice"/>
+                                </group>
+                            </page>
+                            <page string="Bảng giá gửi xe">
+                                <group>
+                                    <field name="veh1"/>
+                                    <field name="veh2"/>
+                                    <field name="veh3"/>
+                                </group>
+                            </page>
+                            <page string="Giá dịch vụ chung">
+                                <group>
+                                    <field name="pub"/>
+                                </group>
+                            </page>
+
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="price_view_kanban" model="ir.ui.view">
+            <field name="name">price_view_kanban</field>
+            <field name="model">price</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="veh1"/>
+                    <field name="veh2"/>
+                    <field name="veh3"/>
+                    <field name="pub"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="oe_kanban_details d-flex flex-column">
+                                    <strong>
+                                        Ngày cập nhật: <field name="dateprice"/>
+                                    </strong>
+                                    <ul><li>
+                                            Giá nước/khối: <field name="waterprice"/>
+                                        </li>
+                                        <li>
+                                            Giá điện/số: <field name="electricprice"/>
+                                        </li>
+                                        <li>
+                                            Giá gửi ô tô: <field name="veh1"/>
+                                        </li>
+                                        <li>
+                                            Giá gửi xe máy: <field name="veh2"/>
+                                        </li>
+                                        <li>
+                                            Giá gửi xe đạp: <field name="veh3"/>
+                                        </li>
+                                        <li>
+                                            Phí vệ sinh chung: <field name="pub"/>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="price_action" model="ir.actions.act_window">
+            <field name="name">Price</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">price</field>
+            <field name="view_mode">kanban,form</field>
+        </record>
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="price_id" name="Cập nhật giá dịch vụ" parent="service_id" action="price_action" sequence="3"/>
+    </data>
+</odoo>

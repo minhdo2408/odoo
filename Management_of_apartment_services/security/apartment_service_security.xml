@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.module.category" id="apartment_service_category">
+            <field name="name">Apartment Service</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="group_resident" model="res.groups">
+            <field name="name">Resident</field>
+            <field name="category_id" ref="apartment_service_category"/>
+        </record>
+
+        <record id="group_cashier" model="res.groups">
+            <field name="name">Cashier</field>
+            <field name="category_id" ref="apartment_service_category"/>
+            <field name="implied_ids" eval="[(4, ref('group_resident'))]"/>
+        </record>
+
+        <record id="group_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="apartment_service_category"/>
+            <field name="implied_ids" eval="[(4, ref('group_cashier'))]"/>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="service_action" model="ir.actions.act_window">
+            <field name="name">Service</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">service</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record id="customer_action_by_service" model="ir.actions.act_window">
+            <field name="name">Customer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">customer</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('apartment','=', 'customer_id')]</field>
+        </record>
+
+        <record id="service_view_tree" model="ir.ui.view">
+            <field name="name">service_view_tree</field>
+            <field name="model">service</field>
+            <field name="arch" type="xml">
+                <tree string="service_tree">
+<!--                    <field name="lpid"/>-->
+                    <field name="servicecode"/>
+                    <field name="last_price"/>
+                    <field name="customer_id"/>
+                    <field name="waterqtt"/>
+                    <field name="electricqtt"/>
+                    <field name="waterinvoice"/>
+                    <field name="electricinvoice"/>
+                    <field name="parkinginvoice"/>
+                    <field name="publicinvoice"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="service_view_form" model="ir.ui.view">
+            <field name="name">service_view_form</field>
+            <field name="model">service</field>
+            <field name="arch" type="xml">
+                <form string="service_form">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="action" name="%(customer_action_by_service)d" icon="fa-home">
+                                <field name="customer_id" widget="statinfo" string="Căn hộ"/>
+                            </button>
+                            <button class="oe_stat_button" type="action" name="%(service_action)d" icon="fa-bicycle">
+                                <field name="bike" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" type="action" name="%(service_action)d" icon="fa-motorcycle">
+                                <field name="motorbike" widget="statinfo"/>
+                            </button>
+                            <button class="oe_stat_button" type="action" name="%(service_action)d" icon="fa-car">
+                                <field name="car" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <strong>Mã dịch vụ: </strong>
+                            <label for="servicecode" class="oe_edit_only"/>
+                            <h1>
+                                <field name="servicecode" placeholder="Căn hộ/Tháng dịch vụ/Năm - VD: 306/11/2022"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="last_price"/>
+<!--                            <field name="lpid" placeholder="Vui lòng chọn ngày cập nhật giá"/>-->
+                        </group>
+                        <group>
+                            <group>
+                                <field name="customer_id" placeholder="Căn hộ sử dụng dịch vụ"/>
+                                <field name="waterqtt"/>
+                                <field name="electricqtt"/>
+                            </group>
+
+                            <group>
+                                <field name="car"/>
+                                <field name="motorbike"/>
+                                <field name="bike"/>
+                            </group>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+        <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+        <menuitem id="apartment_service_root" name="Quản lý dịch vụ" sequence="1"/>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="service_id" name="Dịch vụ" parent="apartment_service_root" sequence="1"/>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="service_sum_id" name="Thông tin dịch vụ" parent="service_id" action="service_action" sequence="1"/>
+    </data>
+</odoo>
